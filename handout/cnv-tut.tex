@@ -94,8 +94,8 @@ The data files are contained in the subdirectory called \texttt{data} and are th
 
 These files are based on subsetting the whole genomes derived from blood and liver metastases to the first 60Mb of chromosome 5. This will allow our analyses to run in a sufficient time during the workshop, but it's worth being aware that we are analysing just 1.9\% of the genome which will highlight the length of time and resources required to perform cancer genomics on full genomes!\\
 
-Open the Terminal and go to the \texttt{CNV} working directory:
 \begin{steps}
+Open the Terminal and go to the \texttt{CNV} working directory:
 \begin{lstlisting}
 cd cnv/
 \end{lstlisting}
@@ -106,8 +106,8 @@ cd cnv/
   \textbf{\texttt{cnv}} directory.
 \end{warning}
 
-Check that the \texttt{data} directory contains the above-mentioned files by typing:
 \begin{steps}
+Check that the \texttt{data} directory contains the above-mentioned files by typing:
 \begin{lstlisting}
 ll data
 \end{lstlisting}
@@ -127,8 +127,8 @@ Sequenza is run in three steps. The first pre-processing step is run on the fina
 
 \subsection{Step 1: Pre-Processing -- Walking the Genome}
 
-Run the first step with the following command:
 \begin{steps}
+Run the first step with the following command:
 \begin{lstlisting}
 pypy software/sequenza/sequenza-utils.py bam2seqz -n data/normal.chr5.60Mb.bam -t data/tumour.chr5.60Mb.bam --fasta assets/human\_g1k\_v37.fasta -gc assets/human\_g1k\_v37.gc50Base.txt.gz -C 5:1-60000000 | gzip > stage1.seqz.gz
 \end{lstlisting}
@@ -171,8 +171,8 @@ This output has one line for each position in the BAMs and includes information 
 
 The binning step takes the rows of genomic positions and compresses them down to 1 row for every 200 rows previously. This massively reduces the file size and processing time in the third step.\\
 
-Launch the second step with:
 \begin{steps}
+Launch the second step with:
 \begin{lstlisting}
 pypy software/sequenza/sequenza-utils.py seqz-binning -w 200 -s stage1.seqz.gz | gzip > stage2.seqz.gz
 \end{lstlisting}
@@ -194,8 +194,8 @@ This step should take approximately 4 minutes to complete.
 
 We will now perform the CNV analysis and output the results using the R part of Sequenza.\\
 
-Open the R terminal:
 \begin{steps}
+Open the R terminal:
 \begin{lstlisting}
 R
 \end{lstlisting}
@@ -217,8 +217,8 @@ sequenza.results(sequenza.extract = seqzdata, cp.table = CP.example, sample.id =
 
 If every command ran successfully, you will now have a "sequenza\_results" folder containing 13 files.\\
 
-Quit R:
 \begin{steps}
+Quit R:
 \begin{lstlisting}
 q()
 Then n at the "Save workspace image" prompt
@@ -237,8 +237,8 @@ Then n at the "Save workspace image" prompt
 
 One of the first and most important estimates that Sequenza provides is the tumour cellularity (the estimated percentage of tumour cells in the tumour genome). This estimate is based on the B allele frequency and depth ratio through the genome and is an important metric to know for interpretation of Sequenza results and for other analyses.\\
 
-Lets look at the cellularity estimate for our analysis by opening CanGenWorkshop\_model\_fit.pdf with the command:
 \begin{steps}
+Lets look at the cellularity estimate for our analysis by opening CanGenWorkshop\_model\_fit.pdf with the command:
 \begin{lstlisting}
 evince sequenza_results/CanGenWorkshop_model_fit.pdf
 \end{lstlisting}
@@ -248,8 +248,8 @@ The cellularity estimate is at the top along with the average ploidy estimate an
 
 Close the PDF window to resume the Terminal prompt.\\
 
-Let's now look at the CNV inferences through our genomic block. Open the genome copy number visualisation file with:
 \begin{steps}
+Let's now look at the CNV inferences through our genomic block. Open the genome copy number visualisation file with:
 \begin{lstlisting}
 evince sequenza_results/CanGenWorkshop_genome_view.pdf
 \end{lstlisting}
@@ -257,10 +257,10 @@ evince sequenza_results/CanGenWorkshop_genome_view.pdf
 
 This file contains three ``pages" of copy number events through the entire genomic block. The first page shows copy numbers of the A (red) and B (blue) alleles, the second page shows overall copy number changes and the third page shows the B allele frequency and depth ratio through genomic block. Looking at the overall copy number changes, we see that our block is at a copy number of 2 with a small duplication to copy number 4 about 1/3 of the way through the block and another just after halfway through the block. There is also a reduction in copy number to 1 copy about 4/5 of the way through the block. The gap that you see just before this reduction in copy number is the chromosomal centromere - an area that is notoriously difficult to sequence so always ends up in a gap with short read data.
 
-You can see how this is a very easy to read output and lets you immediately see the frequency and severity of copy number events through your genome. Let's compare the small genomic block we ran with the same output from the entire genome which has been pre-computed for you. This is located in the ``pre\_generated/results\_whole\_genome" folder and contains the same 13 output files as for the small genomic block.
+You can see how this is a very easy to read output and lets you immediately see the frequency and severity of copy number events through your genome. Let's compare the small genomic block we ran with the same output from the entire genome which has been pre-computed for you. This is located in the ``pre\_generated/results\_whole\_genome" folder and contains the same 13 output files as for the small genomic block.\\
 
-As before, let's look at the cellularity estimate with:
 \begin{steps}
+As before, let's look at the cellularity estimate with:
 \begin{lstlisting}
 evince pre_generated/results_whole_genome/CanGenWorkshop_model_fit.pdf
 \end{lstlisting}
@@ -268,8 +268,8 @@ evince pre_generated/results_whole_genome/CanGenWorkshop_model_fit.pdf
 
 It now looks like it's even worse at just 16\%! A change is to be expected as we were only analysing 1.9\% of the genome.\\
 
-Let's now look at the whole genome copy number profile with:
 \begin{steps}
+Let's now look at the whole genome copy number profile with:
 \begin{lstlisting}
 evince pre_generated/results_whole_genome/CanGenWorkshop_genome_view.pdf
 \end{lstlisting}
@@ -289,8 +289,8 @@ You can see that there are a number of copy number events across the genome and 
 
 Let's see if we can visualise one of the CNV events where copy number increased significantly. We'll focus on the copy number 4 event seen at about 1/3 of the way through the CanGenWorkshop\_genome\_view.pdf output we generated. First, we need to find the coordinates that have been predicted for this event.\\
 
-Have a look at the CanGenWorkshop\_segments.txt file in the results folder to view all predicted CNV events with:
 \begin{steps}
+Have a look at the CanGenWorkshop\_segments.txt file in the results folder to view all predicted CNV events with:
 \begin{lstlisting}
 less sequenza_results/CanGenWorkshop_segments.txt
 \end{lstlisting}
@@ -300,8 +300,8 @@ There is only one at a copy number of 4 (CNt column) and it starts at 21051700 t
 
 Quit out of viewing the segments file by pressing q.\\
 
-We will now open IGV and see if we can observe the predicted increase in copy number within these genomic coordinates.
 \begin{steps}
+We will now open IGV and see if we can observe the predicted increase in copy number within these genomic coordinates.
 \begin{lstlisting}
 /home/trainee/snv/Applications/igv/igv.sh
 \end{lstlisting}
