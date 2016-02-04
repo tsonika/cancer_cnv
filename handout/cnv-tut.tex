@@ -153,7 +153,7 @@ Explanation of parameters:
 There will not be any indication that it is running once you launch the command, to make sure it is running open a new Terminal tab with Shift + Control + T (or from the menu with File then Open Tab) and type the command 'top'. You should see the top line being the command 'pypy' with a \% CPU usage of 98/99\%. Press q to quit out of this process view and go back to the tab running Sequenza. If everything is running correctly, it will take approximately 40 minutes to run. Go have a coffee!
 \end{warning}
 
-Once the command is done you will be returned to the terminal prompt. Make sure the output file is the correct size by typing 'll -h' from the Terminal window that you ran Sequenza from, there should be a file called \texttt{stage1.seqz.gz} of the size 326M.\\
+Once the command is done you will be returned to the terminal prompt. Make sure the output file is the correct size by typing 'll -h' from the Terminal window that you ran Sequenza from, there should be a file called \texttt{stage1.seqz.gz} of the size 395M.\\
 
 \begin{information}
 You can look at the first few lines of the output in the file \texttt{stage1.seqz.gz} with:
@@ -201,7 +201,7 @@ R
 \end{lstlisting}
 \end{steps}
 
-You should now see the R prompt identified with "\textgreater ".\\
+You should now see the R prompt identified with ``\textgreater ".\\
 
 Run the Sequenza R commands:
 \begin{steps}
@@ -215,13 +215,13 @@ sequenza.results(sequenza.extract = seqzdata, cp.table = CP.example, sample.id =
 \end{lstlisting}
 \end{steps}
 
-If every command ran successfully, you will now have a "sequenza\_results" folder containing 13 files.\\
+If every command ran successfully, you will now have a ``sequenza\_results" folder containing 13 files.\\
 
 \begin{steps}
 Quit R:
 \begin{lstlisting}
 q()
-Then n at the "Save workspace image" prompt
+Then n at the ``Save workspace image" prompt
 \end{lstlisting}
 \end{steps}
 
@@ -311,15 +311,15 @@ IGV will take 30 seconds or so to open so just be patient.
 
 For a duplication of this size, we will not be able to easily observe it just by looking at the raw read alignments. In order to see it we will generate two tiled data files (TDFs) within IGV which contain the average read depth for a given window size through the genome. This means that we can aggregate the average read depth over relatively large chunks of the genome and compare these values between the normal and tumour genomes.
 
-To begin, we will go to ``Tools" then ``Run igvtools..." in the IGV menubar. Specify the normal bam file (under \texttt{cnv} then \texttt{data}) as the input file and change the window size to 100000 (one hundred thousand). Then press the ``Run" button and IGV will make the TDF file. This takes about 5 minutes. Repeat this for the tumour genome.
+To begin, we will go to ``Tools" then ``Run igvtools..." in the IGV menubar. Specify the normal bam file (under \texttt{cnv} then \texttt{data}) as the input file and change the window size to 100000 (one hundred thousand). Then press the ``Run" button and IGV will make the TDF file. Once it is done the Messages box will day ``Done"; this takes about 5 minutes. Repeat this for the tumour genome.
 
-After you have both TDF files, go to ``File" and ``Load from file..." in the menubar and select the BAM and TDF files to open. Once you have opened them, they will appear as tracks along with the BAM tracks we loaded initially. Navigate to the genomic coordinates of our event (5:21,051,700-21,522,065) by typing it in the coordinate box at the top. Mouse over the two blue tracks to get the average depth values for the 100,000bp windows. What you should see is that the liverMets sample has 3-6X more coverage than the Blood sample for the four windows that cover this region.
+After you have both TDF files, go to ``File" and ``Load from file..." in the menubar and select the BAM and TDF files to open. Once you have opened them, they will appear as tracks along with the BAM tracks we loaded initially. Navigate to the genomic coordinates of our event (5:21,051,700-21,522,065) by typing it in the coordinate box at the top. Click at various places along the two blue tracks to get the average depth values for the 100,000bp windows. What you should see is that the tumour sample has 3-6X more coverage than the normal sample for the four windows that cover this region.
 
 This may seem a bit underwhelming, after all, wasn't the increase of the region to a copy number of 4, i.e. we expect a doubling of reads in the tumour? To explain why we are only seeing such a small coverage increase, we need to turn to our good friend mathematics!
 
 Imagine we have two 30X genomes for the normal and tumour samples and the tumour is at 100\% purity. If there is a copy number increase to 4 in the tumour from 2 in the normal, the duplicated segment should indeed have twice as many reads as the same segment in the normal genome. Now, lets imagine the tumour genome was only at a purity of 50\% (i.e. it contains 50\% normal cells and 50\% tumour cells). Now, half of the duplicated ``tumour genome" segment will be at a copy number of 2 and half will be at 4. What does this mean when we sequence them as a mixture? The resulting average copy number of the block will be $(0.5*2)+(0.5*4) = 3$. Now what if we only have 16\% tumour cells in our ``tumour genome"? This will be $(0.84*2)+(0.16*4) = 2.32$. You can see how sequencing a low cellularity tumour at a low depth makes it much harder to infer copy number variations!
 
-Returning to our genomes at hand, when we previously looked at the cellularity estimate of this tumour we saw it was 20\% from the small block we ran or 16\% from the whole genome. Thus, the read depth increase of just 3-6X (about 10-20\% more reads) in this segment is not surprising. A low cellularity tumour greatly reduces our power to infer copy number events as relatively small changes in depth can occur by chance in the genome and these can be mis-identified as copy number changes. As well as this, it reduces our power for other analyses since we must also remember that a tumour can itself contain multiple clones which have to share just 16\% of reads.\\
+Returning to our genomes at hand, when we previously looked at the cellularity estimate of this tumour we saw it was 24\% from the small block we ran or 16\% from the whole genome. Thus, the read depth increase of just 3-6X (about 10-20\% more reads) in this segment is not surprising. A low cellularity tumour greatly reduces our power to infer copy number events as relatively small changes in depth can occur by chance in the genome and these can be mis-identified as copy number changes. As well as this, it reduces our power for other analyses since we must also remember that a tumour can itself contain multiple clones which have to share just 16\% of reads.\\
 
 \begin{note}
 It is possible to sequence through a low-cellularity sample when, for example, there is no way to take another sample (as is the case of most biopsies). ``Sequencing through" means to simply sequence the tumour at a much higher coverage, usually 90-120X. This will mean that there will be a net increase in reads supplying evidence for copy number events and variants and in aggregate these will still retain power to infer these events when using tools that look at the whole genome like Sequenza does.
